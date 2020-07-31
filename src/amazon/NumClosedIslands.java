@@ -16,32 +16,44 @@ public class NumClosedIslands {
 	}
 	static boolean borderFd = false;
 	
-	void traverse(int i, int j) {
+	boolean traverse(int i, int j) {
+		boolean retVal = false;
 		visited[i][j] = true;
+		
 		if (!borderFd && isBorder(i, j)) {
-			count--;
-			borderFd = true;
+			retVal = true;
 		}
-		if (i + 1 < grid.length && !visited[i + 1][j] && grid[i + 1][j] == 0)
-			traverse(i + 1, j);
-		if (j + 1 < grid[0].length && !visited[i][j + 1] && grid[i][j + 1] == 0)
-			traverse(i, j + 1);
-		if (i - 1 >= 0 && !visited[i - 1][j] && grid[i - 1][j] == 0)
-			traverse(i - 1, j);
-		if (j - 1 >= 0 && !visited[i][j - 1] && grid[i][j - 1] == 0)
-			traverse(i, j - 1);
+		if (i + 1 < grid.length && !visited[i + 1][j] && grid[i + 1][j] == 0) {
+			boolean traVal = traverse(i + 1, j);
+			retVal = retVal || traVal;
+		}
+		if (j + 1 < grid[0].length && !visited[i][j + 1] && grid[i][j + 1] == 0) {
+			boolean traVal = traverse(i, j + 1);
+			retVal = retVal || traVal;
+		}
+		if (i - 1 >= 0 && !visited[i - 1][j] && grid[i - 1][j] == 0) {
+			boolean traVal = traverse(i - 1, j);
+			retVal = retVal || traVal;
+		}
+		if (j - 1 >= 0 && !visited[i][j - 1] && grid[i][j - 1] == 0) {
+			boolean traVal = traverse(i, j - 1);
+			retVal = retVal || traVal;
+		}
+		
+		return retVal;
 	}
 
 	void visit(int i, int j) {
 		if (visited[i][j] || grid[i][j] == 1)
 			return;
-		count++;
+		
 		borderFd = false;
-		System.out.println(i+","+j);
-		System.out.println("before count="+count);
-		traverse(i, j);
-		System.out.println("after count="+count);
-		System.out.println("--------------");
+		//System.out.println(i+","+j);
+		//System.out.println("before count="+count);
+		if(!traverse(i, j))
+			count++;
+		//System.out.println("after count="+count);
+		//System.out.println("--------------");
 	}
 
 	public int closedIsland(int[][] grid) {
@@ -66,14 +78,14 @@ public class NumClosedIslands {
 		// TODO Auto-generated method stub
 //		int[][] grid = {{1,1,1,1,1,1,1,0},{1,0,0,0,0,1,1,0},{1,0,1,0,1,1,1,0},{1,0,0,0,0,1,0,1},{1,1,1,1,1,1,1,0}};
 //		int[][] grid = { { 0, 0, 1, 0, 0 }, { 0, 1, 0, 1, 0 }, { 0, 1, 1, 1, 0 } };
-		int[][] grid = 
-						{{1,1,1,1,1,1,1},
-		                {1,0,0,0,0,0,1},
-		                {1,0,1,1,1,0,1},
-		                {1,0,1,0,1,0,1},
-		                {1,0,1,1,1,0,1},
-		                {1,0,0,0,0,0,1},
-		                {1,1,1,1,1,1,1}};
+//		int[][] grid = 
+//						{{1,1,1,1,1,1,1},
+//		                {1,0,0,0,0,0,1},
+//		                {1,0,1,1,1,0,1},
+//		                {1,0,1,0,1,0,1},
+//		                {1,0,1,1,1,0,1},
+//		                {1,0,0,0,0,0,1},
+//		                {1,1,1,1,1,1,1}};
 //		int[][] grid = 
 //			   {{0,0,1,1,0,1,0,0,1,0},
 //				{1,1,0,1,1,0,1,1,1,0},
@@ -86,21 +98,21 @@ public class NumClosedIslands {
 //				{1,1,1,0,0,1,0,1,0,1},
 //				{1,1,1,0,1,1,0,1,1,0}};
 
-//		int[][] grid = 
-//				{{0,1,0,1,0,0,0,1,1,0,1,1,0,0,1,1,1,0,1,1},
-//				 {0,1,1,0,0,0,0,1,1,1,0,1,0,1,1,0,0,1,0,1},
-//				 {1,1,0,1,0,0,1,1,1,0,0,0,1,0,0,1,0,1,0,0},
-//				 {0,1,1,1,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0},
-//				 {1,1,0,0,1,0,0,1,1,0,1,1,0,1,1,1,0,0,1,1},
-//				 {1,1,0,0,0,0,0,1,0,1,1,1,0,1,0,0,0,0,0,1},
-//				 {1,0,1,1,0,1,0,1,0,0,1,0,1,1,1,1,1,0,1,0},
-//				 {1,0,0,1,1,0,0,1,0,1,0,0,0,0,0,0,0,0,0,1},
-//				 {0,0,0,1,1,1,0,1,1,1,0,1,0,1,1,0,1,0,0,0},
-//				 {1,1,0,0,0,0,1,1,0,0,0,1,0,0,1,0,1,0,1,1},
-//				 {1,0,0,1,1,1,1,0,1,0,1,1,1,0,0,0,0,1,1,0},
-//				 {1,1,0,0,0,0,0,0,1,1,1,1,0,1,0,1,0,1,1,1},
-//				 {0,1,1,0,0,1,1,0,0,1,0,1,1,1,1,1,1,0,0,0},
-//				 {1,0,0,0,1,1,0,1,1,1,0,0,1,0,1,1,0,1,0,1}};
+		int[][] grid = 
+				{{0,1,0,1,0,0,0,1,1,0,1,1,0,0,1,1,1,0,1,1},
+				 {0,1,1,0,0,0,0,1,1,1,0,1,0,1,1,0,0,1,0,1},
+				 {1,1,0,1,0,0,1,1,1,0,0,0,1,0,0,1,0,1,0,0},
+				 {0,1,1,1,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0},
+				 {1,1,0,0,1,0,0,1,1,0,1,1,0,1,1,1,0,0,1,1},
+				 {1,1,0,0,0,0,0,1,0,1,1,1,0,1,0,0,0,0,0,1},
+				 {1,0,1,1,0,1,0,1,0,0,1,0,1,1,1,1,1,0,1,0},
+				 {1,0,0,1,1,0,0,1,0,1,0,0,0,0,0,0,0,0,0,1},
+				 {0,0,0,1,1,1,0,1,1,1,0,1,0,1,1,0,1,0,0,0},
+				 {1,1,0,0,0,0,1,1,0,0,0,1,0,0,1,0,1,0,1,1},
+				 {1,0,0,1,1,1,1,0,1,0,1,1,1,0,0,0,0,1,1,0},
+				 {1,1,0,0,0,0,0,0,1,1,1,1,0,1,0,1,0,1,1,1},
+				 {0,1,1,0,0,1,1,0,0,1,0,1,1,1,1,1,1,0,0,0},
+				 {1,0,0,0,1,1,0,1,1,1,0,0,1,0,1,1,0,1,0,1}};
 		System.out.println(new NumClosedIslands().closedIsland(grid));
 	}
 
